@@ -162,23 +162,10 @@ class _ProfileName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: RichText(
-        text: TextSpan(
-          style: TextStyle(
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w400,
-          ),
-          text: "Danielle",
-          children: [
-            TextSpan(
-              text: " Hoffman",
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Text(
+        "Danielle Hoffman",
+        style: TextStyle(fontFamily: "Montserrat", color: Colors.white),
       ),
     );
   }
@@ -189,10 +176,32 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-          decoration: BoxDecoration(
-        // color: Color(0xFF333333),
-        color: Color(0xFFFFF),
-      )),
+        padding: EdgeInsets.only(top: 10.0),
+        decoration: BoxDecoration(color: Color(0xFFFFF)),
+        child: Column(
+          children: [
+            DrawerItem(title: "Perfil"),
+            DrawerItem(title: "Buscar"),
+            DrawerItem(title: "Combinações"),
+            DrawerItem(title: "Depoimentos"),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DrawerItem extends StatelessWidget {
+  final String title;
+
+  const DrawerItem({this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.only(left: 30.0),
+      title: Text(this.title, style: TextStyle(fontFamily: "Montserrat")),
+      onTap: () {},
     );
   }
 }
@@ -200,6 +209,10 @@ class _Body extends StatelessWidget {
 class _Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ListTile(
+      contentPadding: EdgeInsets.only(left: 30.0),
+      title: Text("Sair", style: TextStyle(fontFamily: "Montserrat")),
+      onTap: () {},
+    );
   }
 }
