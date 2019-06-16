@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jobtinder/styles/colors.dart';
+import 'package:jobtinder/styles/pallete.dart';
 
 class Button extends StatelessWidget {
   Button({this.title, this.icon, this.onTap});
@@ -18,7 +18,7 @@ class Button extends StatelessWidget {
       child: InkWell(
         borderRadius: this.borderRadius,
         onTap: this.onTap,
-        highlightColor: Pallete.lemonGreen,
+        highlightColor: Pallete.drawerDarkGray,
         child: Container(
           width: 150,
           alignment: Alignment.center,
