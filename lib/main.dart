@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:jobtinder/models/user.dart';
+import 'package:provider/provider.dart';
 
 import 'package:jobtinder/graphql/client.dart' as GraphQL;
 import 'package:jobtinder/screens/login.dart';
@@ -22,11 +24,14 @@ class App extends StatelessWidget {
     return GraphQLProvider(
       client: GraphQL.client,
       child: CacheProvider(
-        child: MaterialApp(routes: {
-          '/': (context) => Scaffold(body: Splash()),
-          '/login': (context) => Scaffold(body: Login()),
-          '/home': (context) => Scaffold(drawer: Drawer(child: AppDrawer())),
-        }),
+        child: ChangeNotifierProvider(
+          builder: (context) => User(),
+          child: MaterialApp(routes: {
+            '/': (context) => Scaffold(body: Splash()),
+            '/login': (context) => Scaffold(body: Login()),
+            '/home': (context) => Scaffold(drawer: Drawer(child: AppDrawer())),
+          }),
+        ),
       ),
     );
   }

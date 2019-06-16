@@ -14,6 +14,7 @@ dependencies:
   font_awesome_flutter: ^8.4.0
   graphql_flutter: ^1.0.1
   shared_preferences: ^0.5.3+1
+  provider: 3.0.0+1
 
 dev_dependencies:
   flutter_test:
@@ -37,6 +38,10 @@ flutter:
     - family: Pacifico
       fonts:
         - asset: assets/fonts/Pacifico-Regular.ttf
+
+    - family: Righteous
+      fonts:
+        - asset: assets/fonts/Righteous-Regular.ttf
     
     - family: Montserrat
       fonts:

@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:jobtinder/models/user.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:flutter/material.dart';
 import 'package:jobtinder/styles/pallete.dart';
 
@@ -11,16 +15,30 @@ class Splash extends StatefulWidget {
 class SplashState extends State<Splash> {
   final int splashDuration = 2;
 
-  startTimer() async {
-    return Timer(Duration(seconds: splashDuration), () {
-      Navigator.of(context).pushReplacementNamed('/home');
+  void checkCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final token = prefs.getString("user-token");
+
+    Timer(Duration(seconds: splashDuration), () async {
+      if (token == null) {
+        await precacheImage(
+          AssetImage("assets/images/login_background.jpg"),
+          context,
+        );
+        Navigator.of(context).pushReplacementNamed('/login');
+      } else {
+        Provider.of<User>(context)..token = token;
+
+        Navigator.of(context).pushReplacementNamed('/home');
+      }
     });
   }
 
   @override
   void initState() {
     super.initState();
-    startTimer();
+    checkCredentials();
   }
 
   @override
