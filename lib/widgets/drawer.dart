@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:jobtinder/styles/pallete.dart';
 import 'package:jobtinder/widgets/rating.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
@@ -13,16 +14,29 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _Header(),
-        _Body(),
-        _Footer(),
+        Header(),
+        Body(),
+        DrawerItem(
+          title: "Sair",
+          onTap: () => handleLogout(context),
+        ),
       ],
     );
   }
+
+  void handleLogout(BuildContext context) async {
+    await SharedPreferences.getInstance()
+      ..remove('user-token');
+
+    await precacheImage(
+        AssetImage("assets/images/login_background.jpg"), context);
+
+    Navigator.of(context).pushReplacementNamed('/login');
+  }
 }
 
-class _Header extends StatelessWidget {
-  _Header();
+class Header extends StatelessWidget {
+  Header();
 
   @override
   Widget build(BuildContext context) {
@@ -45,19 +59,19 @@ class _Header extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _ProfilePicture(),
+          ProfilePicture(),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Rating(rating: 4.2),
           ),
-          _ProfileName(),
+          ProfileName(),
         ],
       ),
     );
   }
 }
 
-class _ProfilePicture extends StatelessWidget {
+class ProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -80,7 +94,7 @@ class _ProfilePicture extends StatelessWidget {
   }
 }
 
-class _ProfileName extends StatelessWidget {
+class ProfileName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -93,7 +107,7 @@ class _ProfileName extends StatelessWidget {
   }
 }
 
-class _Body extends StatelessWidget {
+class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -102,10 +116,22 @@ class _Body extends StatelessWidget {
         decoration: BoxDecoration(color: Color(0xFFFFF)),
         child: Column(
           children: [
-            DrawerItem(title: "Perfil"),
-            DrawerItem(title: "Buscar"),
-            DrawerItem(title: "Combinações"),
-            DrawerItem(title: "Depoimentos"),
+            DrawerItem(
+              title: "Perfil",
+              onTap: () {},
+            ),
+            DrawerItem(
+              title: "Buscar",
+              onTap: () {},
+            ),
+            DrawerItem(
+              title: "Combinações",
+              onTap: () {},
+            ),
+            DrawerItem(
+              title: "Depoimentos",
+              onTap: () {},
+            ),
           ],
         ),
       ),
@@ -115,26 +141,16 @@ class _Body extends StatelessWidget {
 
 class DrawerItem extends StatelessWidget {
   final String title;
+  final VoidCallback onTap;
 
-  const DrawerItem({this.title});
+  const DrawerItem({this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.only(left: 30.0),
       title: Text(this.title, style: TextStyle(fontFamily: "Montserrat")),
-      onTap: () {},
-    );
-  }
-}
-
-class _Footer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.only(left: 30.0),
-      title: Text("Sair", style: TextStyle(fontFamily: "Montserrat")),
-      onTap: () {},
+      onTap: onTap,
     );
   }
 }

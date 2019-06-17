@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final HttpLink httpLink = HttpLink(
-  uri: 'https://api.github.com/graphql',
+  uri: 'http://ligapay.tk',
 );
 
-final AuthLink authLink = AuthLink(
-  getToken: () async => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
-  // OR
-  // getToken: () => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
-);
+final AuthLink authLink = AuthLink(getToken: () async {
+  final shared = await SharedPreferences.getInstance();
+  final token = shared.getString("user-token");
+
+  return 'Bearer $token';
+});
 
 final Link link = authLink.concat(httpLink as Link);
 

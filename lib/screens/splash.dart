@@ -28,7 +28,7 @@ class SplashState extends State<Splash> {
         );
         Navigator.of(context).pushReplacementNamed('/login');
       } else {
-        Provider.of<User>(context)..token = token;
+        Provider.of<User>(context).token = token;
 
         Navigator.of(context).pushReplacementNamed('/home');
       }
