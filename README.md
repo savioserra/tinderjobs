@@ -1,6 +1,10 @@
-# ligapay
+# TinderJobs
 
-A new Flutter project.
+Tinder-like app using Flutter and GraphQL.
+
+![](https://i.imgur.com/ffRisiL.png)
+![](https://i.imgur.com/0o5ZSuJ.png)
+![](https://i.imgur.com/bzAhLKC.png)
 
 ## Getting Started
 
