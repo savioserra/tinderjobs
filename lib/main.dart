@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jobtinder/models/user.dart';
+import 'package:jobtinder/screens/job_search.dart';
 import 'package:provider/provider.dart';
 
 import 'package:jobtinder/graphql/client.dart' as GraphQL;
@@ -29,7 +30,10 @@ class App extends StatelessWidget {
           child: MaterialApp(routes: {
             '/': (context) => Scaffold(body: Splash()),
             '/login': (context) => Scaffold(body: Login()),
-            '/home': (context) => Scaffold(drawer: Drawer(child: AppDrawer())),
+            '/jobsearch': (context) => Scaffold(
+                  drawer: Drawer(child: AppDrawer()),
+                  body: JobSearch(),
+                ),
           }),
         ),
       ),

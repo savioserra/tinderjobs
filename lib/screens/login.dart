@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jobtinder/models/user.dart';
+import 'package:jobtinder/screens/job_search.dart';
 import 'package:jobtinder/styles/pallete.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,8 @@ import 'package:jobtinder/graphql/mutation.dart' as Mutations;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatelessWidget {
+  static final routeName = "/login";
+
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -88,8 +91,9 @@ class LoginFormState extends State<LoginForm> {
                         onTap: result.loading
                             ? null
                             : () => login({
-                                  "email": emailController.text,
-                                  "password": passwordController.text
+                                  "email":
+                                      emailController.text.toLowerCase().trim(),
+                                  "password": passwordController.text,
                                 }),
                         child: LoginButton(loading: result.loading),
                       ),
@@ -111,7 +115,7 @@ class LoginFormState extends State<LoginForm> {
 
       Provider.of<User>(context).token = token;
 
-      Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).pushReplacementNamed(JobSearch.routeName);
     }
   }
 }

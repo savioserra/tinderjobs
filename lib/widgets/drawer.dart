@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:jobtinder/screens/login.dart';
 
 import 'package:jobtinder/styles/pallete.dart';
 import 'package:jobtinder/widgets/rating.dart';
@@ -31,7 +32,7 @@ class AppDrawer extends StatelessWidget {
     await precacheImage(
         AssetImage("assets/images/login_background.jpg"), context);
 
-    Navigator.of(context).pushReplacementNamed('/login');
+    Navigator.of(context).pushReplacementNamed(Login.routeName);
   }
 }
 
