@@ -118,10 +118,6 @@ class Body extends StatelessWidget {
         child: Column(
           children: [
             DrawerItem(
-              title: "Perfil",
-              onTap: () {},
-            ),
-            DrawerItem(
               title: "Buscar",
               onTap: () {},
             ),

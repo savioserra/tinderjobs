@@ -42,6 +42,10 @@ flutter:
     - family: Righteous
       fonts:
         - asset: assets/fonts/Righteous-Regular.ttf
+
+    - family:  Custom
+      fonts:
+       - asset: assets/fonts/Custom.ttf
     
     - family: Montserrat
       fonts:
