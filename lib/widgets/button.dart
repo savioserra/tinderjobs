@@ -3,54 +3,62 @@ import 'package:flutter/widgets.dart';
 import 'package:jobtinder/styles/pallete.dart';
 
 class Button extends StatelessWidget {
-  Button({this.title, this.icon, this.onTap});
+  final Widget child;
+
+  final bool loading;
+  final bool outline;
 
   final VoidCallback onTap;
-  final String title;
-  final Icon icon;
 
-  final BorderRadius borderRadius = BorderRadius.all(Radius.circular(10));
+  final BorderRadius borderRadius;
+
+  final Color color;
+  final Color borderColor;
+  final Color splashColor;
+
+  Button({
+    @required this.child,
+    @required this.onTap,
+    this.loading = false,
+    this.outline = false,
+    this.borderRadius = const BorderRadius.all(Radius.circular(4.0)),
+    this.color = Colors.black,
+    this.borderColor = Colors.white,
+    this.splashColor = Colors.white,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.transparent,
+      color: outline ? Colors.transparent : color,
+      borderRadius: borderRadius,
       child: InkWell(
-        borderRadius: this.borderRadius,
-        onTap: this.onTap,
-        highlightColor: Pallete.drawerDarkGray,
+        borderRadius: borderRadius,
+        splashColor: splashColor,
+        onTap: onTap,
         child: Container(
-          width: 150,
           alignment: Alignment.center,
-          padding: EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 20),
           decoration: BoxDecoration(
-            borderRadius: this.borderRadius,
-            border: Border.all(
-              color: Colors.white,
-            ),
+            border: Border.all(color: borderColor),
+            borderRadius: borderRadius,
+            color: Colors.transparent,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                String.fromCharCode(this.icon.icon.codePoint),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontFamily: this.icon.icon.fontFamily,
-                    package: this.icon.icon.fontPackage),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Text(
-                  this.title,
-                  style: TextStyle(
-                      color: Colors.white, fontFamily: "Abel", fontSize: 16),
-                ),
-              ),
-            ],
-          ),
+          child: loading ? CircularProgress() : child,
         ),
+      ),
+    );
+  }
+}
+
+class CircularProgress extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 15.0,
+      width: 15.0,
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Pallete.yellow),
+        strokeWidth: 1.0,
       ),
     );
   }

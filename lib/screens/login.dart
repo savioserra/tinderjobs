@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jobtinder/models/user.dart';
 import 'package:jobtinder/screens/job_search.dart';
 import 'package:jobtinder/styles/pallete.dart';
+import 'package:jobtinder/widgets/button.dart';
 import 'package:provider/provider.dart';
 
 import 'package:jobtinder/graphql/mutation.dart' as Mutations;
@@ -49,6 +50,11 @@ class LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final variables = {
+      "email": emailController.text.trim().toLowerCase(),
+      "password": passwordController.text
+    };
+
     return Form(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -77,29 +83,26 @@ class LoginFormState extends State<LoginForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Material(
-                color: Colors.transparent,
-                child: Mutation(
-                  onCompleted: handleLogin,
-                  options: MutationOptions(document: Mutations.login),
-                  builder: (login, result) => InkWell(
+            padding: const EdgeInsets.only(top: 10.0, right: 30.0, left: 30.0),
+            child: Mutation(
+                onCompleted: handleLogin,
+                options: MutationOptions(document: Mutations.login),
+                builder: (login, result) => Container(
+                      height: 54.0,
+                      child: Button(
+                        outline: true,
                         splashColor: Colors.white,
-                        borderRadius: BorderRadius.circular(4.0),
-                        onTap: result.loading
-                            ? null
-                            : () => login({
-                                  "email":
-                                      emailController.text.toLowerCase().trim(),
-                                  "password": passwordController.text,
-                                }),
-                        child: LoginButton(loading: result.loading),
+                        loading: result.loading,
+                        onTap: result.loading ? null : () => login(variables),
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Montserrat",
+                          ),
+                        ),
                       ),
-                ),
-              ),
-            ),
+                    )),
           ),
         ],
       ),
