@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jobtinder/screens/login.dart';
+import 'package:jobtinder/styles/fonts.dart';
 
 import 'package:jobtinder/styles/pallete.dart';
 import 'package:jobtinder/widgets/rating.dart';
@@ -43,18 +44,12 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 250.0,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          stops: [
-            0.1,
-            0.9,
-          ],
-          colors: [
-            Pallete.drawerLightGray,
-            Pallete.drawerDarkGray,
-          ],
+          stops: [0.1, 0.9],
+          colors: [Pallete.drawerLightGray, Pallete.drawerDarkGray],
         ),
       ),
       child: Column(
@@ -65,7 +60,13 @@ class Header extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20.0),
             child: Rating(rating: 4.2),
           ),
-          ProfileName(),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Fonts.montserrat(
+              "Danielle Hoffman",
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
     );
@@ -90,19 +91,6 @@ class ProfilePicture extends StatelessWidget {
           "https://bittaxer.com/wp-content/uploads/2018/03/danielle-profile-bittaxer-300x300.jpg",
           fit: BoxFit.contain,
         ),
-      ),
-    );
-  }
-}
-
-class ProfileName extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: Text(
-        "Danielle Hoffman",
-        style: TextStyle(fontFamily: "Montserrat", color: Colors.white),
       ),
     );
   }

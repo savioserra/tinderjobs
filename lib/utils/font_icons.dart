@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Fonts {
-  Fonts._();
+class IconFont {
+  IconFont._();
 
   static const fFamily = 'Custom';
 

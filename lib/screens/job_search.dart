@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jobtinder/utils/fonts.dart';
+import 'package:jobtinder/styles/fonts.dart';
+import 'package:jobtinder/utils/font_icons.dart';
 
 class JobSearch extends StatefulWidget {
   static final routeName = "/jobsearch";
@@ -14,20 +15,12 @@ class JobSearchState extends State<JobSearch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFF373737),
-            Color(0xFF2a2a2a),
-            Color(0xFF1e1e1e),
-          ],
-          stops: [
-            0.0,
-            0.7,
-            1.0,
-          ],
+          colors: [Color(0xFF373737), Color(0xFF2a2a2a), Color(0xFF1e1e1e)],
+          stops: [0.0, 0.7, 1.0],
         ),
       ),
       child: Column(
@@ -46,22 +39,15 @@ class JobSearchState extends State<JobSearch> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20.0),
-                          child: Text(
+                          child: Fonts.montserrat(
                             "Empresa",
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 22.0,
-                              color: Colors.white,
-                            ),
+                            color: Colors.white,
+                            fontSize: 22.0,
                           ),
                         ),
-                        Text(
+                        Fonts.montserrat(
                           "Vaga",
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 14.0,
-                            color: Colors.white,
-                          ),
+                          color: Colors.white,
                         ),
                       ],
                     ),
@@ -79,7 +65,7 @@ class JobSearchState extends State<JobSearch> {
                         color: Colors.white,
                         width: 1.0,
                       ),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black,
                           blurRadius: 2,
@@ -101,7 +87,7 @@ class JobSearchState extends State<JobSearch> {
           Expanded(
             child: Container(
               child: ListView(
-                padding: EdgeInsets.symmetric(vertical: 20.0),
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
                 children: [
                   Content(
                     headerTitle: "Descrição",
@@ -127,14 +113,14 @@ class JobSearchState extends State<JobSearch> {
           Container(
             height: 60.0,
             width: double.infinity,
-            color: Color(0xFF191919),
+            color: const Color(0xFF191919),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: Fonts.left_open_mini,
+                    icon: IconFont.left_open_mini,
                     onTap: () {},
                   ),
                   IconButton(
@@ -142,7 +128,7 @@ class JobSearchState extends State<JobSearch> {
                     onTap: () => setState(() => likeClicked = !likeClicked),
                   ),
                   IconButton(
-                    icon: Fonts.right_open_mini,
+                    icon: IconFont.right_open_mini,
                     onTap: () {},
                   ),
                 ],
@@ -169,8 +155,8 @@ class IconButton extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(20.0),
         child: Container(
-          padding: EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.all(8.0),
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
           ),
           child: Icon(
@@ -216,7 +202,8 @@ class Tag extends StatelessWidget {
           splashColor: Colors.white,
           onTap: onTap,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.0),
               border: Border.all(
@@ -224,13 +211,7 @@ class Tag extends StatelessWidget {
                 width: 1.0,
               ),
             ),
-            child: Text(
-              text,
-              style: TextStyle(
-                fontFamily: "Montserrat",
-                color: Colors.white,
-              ),
-            ),
+            child: Fonts.montserrat(text, color: Colors.white),
           ),
         ),
       ),
@@ -250,9 +231,9 @@ class Content extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: Container(
         // height: 200.0,
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black12,
               blurRadius: 4.0,
@@ -265,23 +246,15 @@ class Content extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            Fonts.montserrat(
               headerTitle,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 18.0,
-                fontFamily: "Montserrat",
-              ),
+              color: Colors.grey,
+              fontSize: 18.0,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 18.0),
-              child: Text(
+              child: Fonts.montserrat(
                 body,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14.0,
-                  fontFamily: "Montserrat",
-                ),
               ),
             ),
           ],

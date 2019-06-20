@@ -56,7 +56,7 @@ class CircularProgress extends StatelessWidget {
     return Container(
       height: 15.0,
       width: 15.0,
-      child: CircularProgressIndicator(
+      child: const CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation(Pallete.yellow),
         strokeWidth: 1.0,
       ),

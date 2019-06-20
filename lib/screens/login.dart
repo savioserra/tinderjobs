@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jobtinder/models/user.dart';
 import 'package:jobtinder/screens/job_search.dart';
-import 'package:jobtinder/styles/pallete.dart';
+import 'package:jobtinder/styles/fonts.dart';
 import 'package:jobtinder/widgets/button.dart';
 import 'package:provider/provider.dart';
 
@@ -50,11 +50,6 @@ class LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final variables = {
-      "email": emailController.text.trim().toLowerCase(),
-      "password": passwordController.text
-    };
-
     return Form(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -85,24 +80,30 @@ class LoginFormState extends State<LoginForm> {
           Padding(
             padding: const EdgeInsets.only(top: 10.0, right: 30.0, left: 30.0),
             child: Mutation(
-                onCompleted: handleLogin,
-                options: MutationOptions(document: Mutations.login),
-                builder: (login, result) => Container(
-                      height: 54.0,
-                      child: Button(
-                        outline: true,
-                        splashColor: Colors.white,
-                        loading: result.loading,
-                        onTap: result.loading ? null : () => login(variables),
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Montserrat",
-                          ),
-                        ),
+              onCompleted: handleLogin,
+              options: MutationOptions(
+                document: Mutations.login,
+              ),
+              builder: (login, result) => Container(
+                    height: 54.0,
+                    child: Button(
+                      outline: true,
+                      splashColor: Colors.black54,
+                      loading: result.loading,
+                      onTap: result.loading
+                          ? null
+                          : () => login({
+                                "email":
+                                    emailController.text.trim().toLowerCase(),
+                                "password": passwordController.text
+                              }),
+                      child: Fonts.montserrat(
+                        "Login",
+                        color: Colors.white,
                       ),
-                    )),
+                    ),
+                  ),
+            ),
           ),
         ],
       ),
@@ -123,58 +124,23 @@ class LoginFormState extends State<LoginForm> {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  final bool loading;
-
-  LoginButton({this.loading = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50.0,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      width: double.infinity,
-      child: content(),
-    );
-  }
-
-  Widget content() {
-    if (!loading) {
-      return Text(
-        "Login",
-        style: TextStyle(
-          fontFamily: "Montserrat",
-          color: Colors.white,
-        ),
-      );
-    }
-
-    return Container(
-      height: 15.0,
-      width: 15.0,
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Pallete.yellow),
-        strokeWidth: 1.0,
-      ),
-    );
-  }
-}
-
 class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(bottom: 15.0),
-      child: Text(
-        "Não possui uma conta? Crie uma!",
-        style: TextStyle(
-          fontFamily: "Montserrat",
-          color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0, right: 30.0, left: 30.0),
+      child: Container(
+        alignment: Alignment.center,
+        height: 40.0,
+        child: Button(
+          onTap: () {},
+          borderColor: Colors.transparent,
+          splashColor: Colors.white,
+          color: Colors.black26,
+          child: Fonts.montserrat(
+            "Não possui uma conta? Crie uma!",
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -216,8 +182,8 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30.0),
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      margin: const EdgeInsets.symmetric(horizontal: 30.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(4.0),
@@ -230,7 +196,7 @@ class InputField extends StatelessWidget {
           border: InputBorder.none,
         ),
         obscureText: obscure,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontFamily: "Montserrat",
         ),

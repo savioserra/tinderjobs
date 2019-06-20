@@ -50,19 +50,19 @@ class SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: RadialGradient(
           colors: [
             Pallete.drawerLightGray,
             Pallete.drawerDarkGray,
           ],
-          radius: .9,
+          radius: 0.9,
         ),
       ),
       child: Container(
         height: 30.0,
         width: 30.0,
-        child: CircularProgressIndicator(
+        child: const CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(Pallete.yellow),
           strokeWidth: 2.0,
         ),
