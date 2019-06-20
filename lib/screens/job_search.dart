@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:jobtinder/styles/fonts.dart';
 import 'package:jobtinder/utils/font_icons.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class JobSearch extends StatefulWidget {
-  static final routeName = "/jobsearch";
+  static const routeName = "/jobsearch";
 
   @override
   JobSearchState createState() => JobSearchState();
@@ -19,97 +22,19 @@ class JobSearchState extends State<JobSearch> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF373737), Color(0xFF2a2a2a), Color(0xFF1e1e1e)],
-          stops: [0.0, 0.7, 1.0],
+          colors: [
+            Color(0xFF373737),
+            Color(0xFF373737),
+            Color(0xFF222222),
+            Color(0xFF0B0B0B)
+          ],
+          stops: [0.0, 0.4, 0.8, 1.0],
         ),
       ),
       child: Column(
         children: [
-          Container(
-            height: 154.0,
-            width: double.infinity,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20.0),
-                          child: Fonts.montserrat(
-                            "Empresa",
-                            color: Colors.white,
-                            fontSize: 22.0,
-                          ),
-                        ),
-                        Fonts.montserrat(
-                          "Vaga",
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 30.0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 80.0,
-                    height: 80.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1.0,
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black,
-                          blurRadius: 2,
-                          offset: Offset(1, 1),
-                        )
-                      ],
-                    ),
-                    child: ClipOval(
-                      child: Image.network(
-                        "https://www.designevo.com/res/templates/thumb_small/blue-and-green-circular-fish-company.png",
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                children: [
-                  Content(
-                    headerTitle: "Descrição",
-                    body:
-                        """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.""",
-                  ),
-                  Content(
-                    headerTitle: "Competências",
-                    body:
-                        """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.""",
-                  ),
-                  TagsContainer(
-                    tags: [
-                      "Tecnologia da Informação",
-                      "Saúde",
-                      "HomeOffice",
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          Header(),
+          Body(),
           Container(
             height: 60.0,
             width: double.infinity,
@@ -117,21 +42,212 @@ class JobSearchState extends State<JobSearch> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   IconButton(
-                    icon: IconFont.left_open_mini,
+                    icon: FontAwesomeIcons.ban,
                     onTap: () {},
                   ),
                   IconButton(
-                    icon: likeClicked ? Icons.favorite : Icons.favorite_border,
+                    icon: likeClicked
+                        ? FontAwesomeIcons.solidHeart
+                        : FontAwesomeIcons.heart,
                     onTap: () => setState(() => likeClicked = !likeClicked),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Body extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        child: ListView(
+          padding: const EdgeInsets.only(bottom: 20.0),
+          children: [
+            Session(
+              title: "Descrição",
+              child: DescriptionCard(
+                text:
+                    """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.""",
+              ),
+            ),
+            Session(
+              title: "Informações",
+              child: AdditionalInfo(),
+            ),
+            TagsContainer(
+              tags: [
+                "Tecnologia da Informação",
+                "Saúde",
+                "HomeOffice",
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AdditionalInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
+        color: Color(0xFF303030),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4.0,
+            offset: Offset(2, 1),
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InfoItem(
+            iconData: FontAwesomeIcons.dollarSign,
+            info: "3500.00",
+          ),
+          InfoItem(
+            iconData: FontAwesomeIcons.calendar,
+            info: "Segunda à Sexta",
+          ),
+          InfoItem(
+            iconData: FontAwesomeIcons.clock,
+            info: "40 h",
+          ),
+          InfoItem(
+            iconData: FontAwesomeIcons.mapMarkedAlt,
+            info: "Vitória",
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class InfoItem extends StatelessWidget {
+  final IconData iconData;
+  final String info;
+
+  InfoItem({this.iconData, this.info});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Icon(iconData, color: Colors.white, size: 16.0),
+          ),
+          Fonts.montserrat(info, color: Colors.white),
+        ],
+      ),
+    );
+  }
+}
+
+class Session extends StatelessWidget {
+  Session({this.title, this.child});
+
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Fonts.montserrat(
+              title,
+              color: Color(0xFF686868),
+              fontSize: 18.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: child,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 154.0,
+      child: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Fonts.montserrat(
+                      "Empresa Ltda.",
+                      color: Colors.white,
+                      fontSize: 22.0,
+                    ),
                   ),
-                  IconButton(
-                    icon: IconFont.right_open_mini,
-                    onTap: () {},
+                  Fonts.montserrat(
+                    "Analista de Sistemas",
+                    color: Colors.white,
                   ),
                 ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 30.0),
+            child: Container(
+              alignment: Alignment.center,
+              width: 80.0,
+              height: 80.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white,
+                  width: 1.0,
+                ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(2, 1),
+                  )
+                ],
+              ),
+              child: ClipOval(
+                child: Image.network(
+                  "https://www.designevo.com/res/templates/thumb_small/blue-and-green-circular-fish-company.png",
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),
@@ -162,6 +278,7 @@ class IconButton extends StatelessWidget {
           child: Icon(
             icon,
             color: Colors.white,
+            size: 18.0,
           ),
         ),
       ),
@@ -177,7 +294,7 @@ class TagsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: Wrap(
         children: tags.map((t) => Tag(text: t, onTap: () {})).toList(),
       ),
@@ -219,46 +336,28 @@ class Tag extends StatelessWidget {
   }
 }
 
-class Content extends StatelessWidget {
-  final String headerTitle;
-  final String body;
+class DescriptionCard extends StatelessWidget {
+  final String text;
 
-  Content({@required this.body, @required this.headerTitle});
+  DescriptionCard({@required this.text});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(20.0),
-      child: Container(
-        // height: 200.0,
-        padding: const EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4.0,
-              offset: Offset(0, 2),
-            )
-          ],
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(4.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Fonts.montserrat(
-              headerTitle,
-              color: Colors.grey,
-              fontSize: 18.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18.0),
-              child: Fonts.montserrat(
-                body,
-              ),
-            ),
-          ],
-        ),
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4.0,
+            offset: Offset(2, 1),
+          )
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Fonts.montserrat(
+        text,
       ),
     );
   }

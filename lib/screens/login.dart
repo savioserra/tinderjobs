@@ -10,7 +10,7 @@ import 'package:jobtinder/graphql/mutation.dart' as Mutations;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatelessWidget {
-  static final routeName = "/login";
+  static const routeName = "/login";
 
   @override
   Widget build(BuildContext context) {

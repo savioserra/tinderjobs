@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:jobtinder/styles/pallete.dart';
 
 class Splash extends StatefulWidget {
-  static final routeName = "/splash";
+  static const routeName = "/splash";
 
   @override
   State<StatefulWidget> createState() => SplashState();
