@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jobtinder/core/models/user.dart';
-import 'package:jobtinder/ui/screens/login.dart';
+import 'package:jobtinder/ui/screens/login/login.dart';
 import 'package:jobtinder/ui/styles/fonts.dart';
 import 'package:jobtinder/ui/styles/pallete.dart';
 import 'package:jobtinder/ui/widgets/rating.dart';

@@ -8,11 +8,18 @@ class AuthService {
   AuthService(Api api) : _api = api;
 
   Future<String> login(String email, String password) async {
+    if (email == null || password == null) {
+      return null;
+    }
+
     var result = await _api.client.query(
-      QueryOptions(document: Mutation.login),
+      QueryOptions(document: Mutation.login, variables: {
+        "email": email.trim().toLowerCase(),
+        "password": password,
+      }),
     );
 
-    if (result.data) {
+    if (result.data != null) {
       return result.data["login"]["token"];
     }
 

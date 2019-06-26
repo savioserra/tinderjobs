@@ -1,4 +1,3 @@
-import 'package:jobtinder/core/models/user.dart';
 import 'package:jobtinder/ui/screens/splash/splash_model.dart';
 import 'package:jobtinder/ui/styles/pallete.dart';
 import 'package:provider/provider.dart';

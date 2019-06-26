@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jobtinder/core/models/user.dart';
 import 'package:jobtinder/core/services/persistence.dart';
 import 'package:jobtinder/ui/screens/job_search/job_search.dart';
-import 'package:jobtinder/ui/screens/login.dart';
+import 'package:jobtinder/ui/screens/login/login.dart';
 
 class SplashModel extends ChangeNotifier {
   final PersistenceService persistenceService;
