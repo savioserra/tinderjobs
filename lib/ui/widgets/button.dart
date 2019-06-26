@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jobtinder/styles/pallete.dart';
+import 'package:jobtinder/ui/styles/pallete.dart';
 
 class Button extends StatelessWidget {
   final Widget child;

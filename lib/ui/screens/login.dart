@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:jobtinder/models/user.dart';
-import 'package:jobtinder/screens/job_search.dart';
-import 'package:jobtinder/styles/fonts.dart';
-import 'package:jobtinder/widgets/button.dart';
+import 'package:jobtinder/core/models/user.dart';
+import 'package:jobtinder/ui/screens/job_search/job_search.dart';
+import 'package:jobtinder/ui/styles/fonts.dart';
+import 'package:jobtinder/ui/widgets/button.dart';
 import 'package:provider/provider.dart';
-
-import 'package:jobtinder/graphql/mutation.dart' as Mutations;
+import 'package:jobtinder/core/services/api/graphql/mutation.dart' as Mutations;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class Login extends StatelessWidget {
   static const routeName = "/login";
@@ -89,14 +89,18 @@ class LoginFormState extends State<LoginForm> {
                     child: Button(
                       outline: true,
                       splashColor: Colors.black54,
-                      loading: result.loading,
-                      onTap: result.loading
+                      loading: loading,
+                      onTap: loading
                           ? null
-                          : () => login({
+                          : () {
+                              setState(() => loading = true);
+
+                              login({
                                 "email":
                                     emailController.text.trim().toLowerCase(),
-                                "password": passwordController.text
-                              }),
+                                "password": passwordController.text,
+                              });
+                            },
                       child: Fonts.montserrat(
                         "Login",
                         color: Colors.white,
@@ -113,14 +117,23 @@ class LoginFormState extends State<LoginForm> {
   void handleLogin(data) async {
     if (data != null) {
       final token = data['login']['token'];
+      final user = data['login']['user'];
 
       await SharedPreferences.getInstance()
-        ..setString('user-token', token);
+        ..setString('user', jsonEncode(data));
 
-      Provider.of<User>(context).token = token;
+      Provider.of<User>(context)
+        ..token = token
+        ..email = user["email"]
+        ..rating = user["rating"]
+        ..avatarUrl = user["avatarUrl"];
+
+      await precacheImage(NetworkImage(user["avatarUrl"]), context);
 
       Navigator.of(context).pushReplacementNamed(JobSearch.routeName);
     }
+
+    setState(() => loading = false);
   }
 }
 

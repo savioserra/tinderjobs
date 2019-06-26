@@ -2,5 +2,8 @@
 <resources>
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:colorPrimary">#050505</item>
+        <item name="android:colorPrimaryDark">#050505</item>
+        <item name="android:colorAccent">#050505</item>
     </style>
 </resources>

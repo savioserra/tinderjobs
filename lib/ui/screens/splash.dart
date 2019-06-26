@@ -1,13 +1,12 @@
 import 'dart:async';
-
-import 'package:jobtinder/models/user.dart';
-import 'package:jobtinder/screens/job_search.dart';
-import 'package:jobtinder/screens/login.dart';
+import 'dart:convert';
+import 'package:jobtinder/core/models/user.dart';
+import 'package:jobtinder/ui/screens/job_search/job_search.dart';
+import 'package:jobtinder/ui/screens/login.dart';
+import 'package:jobtinder/ui/styles/pallete.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:flutter/material.dart';
-import 'package:jobtinder/styles/pallete.dart';
 
 class Splash extends StatefulWidget {
   static const routeName = "/splash";
@@ -22,10 +21,10 @@ class SplashState extends State<Splash> {
   void checkCredentials() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final token = prefs.getString("user-token");
+    final data = prefs.getString("user");
 
     Timer(Duration(seconds: splashDuration), () async {
-      if (token == null) {
+      if (data == null) {
         await precacheImage(
           AssetImage("assets/images/login_background.jpg"),
           context,
@@ -33,8 +32,15 @@ class SplashState extends State<Splash> {
 
         Navigator.of(context).pushReplacementNamed(Login.routeName);
       } else {
-        Provider.of<User>(context).token = token;
+        final decodedUser = jsonDecode(data)["login"];
 
+        final user = Provider.of<User>(context)
+          ..token = decodedUser["token"]
+          ..avatarUrl = decodedUser["user"]["avatarUrl"]
+          ..email = decodedUser["user"]["email"]
+          ..rating = decodedUser["user"]["rating"];
+
+        await precacheImage(NetworkImage(user.avatarUrl), context);
         Navigator.of(context).pushReplacementNamed(JobSearch.routeName);
       }
     });
@@ -51,13 +57,7 @@ class SplashState extends State<Splash> {
     return Container(
       alignment: Alignment.center,
       decoration: const BoxDecoration(
-        gradient: RadialGradient(
-          colors: [
-            Pallete.drawerLightGray,
-            Pallete.drawerDarkGray,
-          ],
-          radius: 0.9,
-        ),
+        color: Pallete.drawerDarkGray,
       ),
       child: Container(
         height: 30.0,

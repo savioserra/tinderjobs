@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:jobtinder/styles/fonts.dart';
-import 'package:jobtinder/utils/font_icons.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jobtinder/core/models/job.dart';
+import 'package:jobtinder/ui/screens/job_search/model.dart';
+import 'package:jobtinder/ui/styles/fonts.dart';
+import 'package:provider/provider.dart';
 
 class JobSearch extends StatefulWidget {
   static const routeName = "/jobsearch";
@@ -13,15 +14,57 @@ class JobSearch extends StatefulWidget {
 }
 
 class JobSearchState extends State<JobSearch> {
-  bool likeClicked = false;
+  // void refresh() {
+  //   if (availableJobs.length <= 5) {
+  //     setState(() {
+  //       getJobsResult = getJobs();
+  //     });
+  //   }
+  // }
+
+  // Future<List<Job>> getJobs() async {
+  //   var result = await gqlClient.query(QueryOptions(
+  //     document: Query.getJobs,
+  //   ));
+
+  //   if (result.data != null) {
+  //     var jobs = List<Job>.from(
+  //       result.data["me"]["availableJobs"].map((j) => Job(title: j["title"])),
+  //     );
+
+  //     availableJobs.addAll(jobs.where((j) => !availableJobs.contains(j)));
+  //   }
+
+  //   return availableJobs;
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<JobSearchModel>.value(
+      value: JobSearchModel(Provider.of(context)),
+      child: Consumer<JobSearchModel>(
+        builder: (context, model, child) => JobOffer(
+              job: model.availableJobs.first,
+              onLike: model.getAvailableJobs,
+            ),
+      ),
+    );
+  }
+}
+
+class JobOffer extends StatelessWidget {
+  final Job job;
+  final VoidCallback onLike;
+
+  JobOffer({this.job, this.onLike});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: [
             Color(0xFF373737),
             Color(0xFF373737),
@@ -33,38 +76,51 @@ class JobSearchState extends State<JobSearch> {
       ),
       child: Column(
         children: [
-          Header(),
-          Body(),
-          Container(
-            height: 60.0,
-            width: double.infinity,
-            color: const Color(0xFF191919),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    icon: FontAwesomeIcons.ban,
-                    onTap: () {},
-                  ),
-                  IconButton(
-                    icon: likeClicked
-                        ? FontAwesomeIcons.solidHeart
-                        : FontAwesomeIcons.heart,
-                    onTap: () => setState(() => likeClicked = !likeClicked),
-                  )
-                ],
-              ),
-            ),
-          ),
+          Header(job: job),
+          Body(job: job),
+          Footer(onLike: onLike),
         ],
       ),
     );
   }
 }
 
+class Footer extends StatelessWidget {
+  final VoidCallback onLike;
+
+  Footer({this.onLike});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60.0,
+      width: double.infinity,
+      color: const Color(0xFF191919),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              icon: FontAwesomeIcons.ban,
+              onTap: () {},
+            ),
+            IconButton(
+              icon: FontAwesomeIcons.heart,
+              onTap: onLike,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class Body extends StatelessWidget {
+  final Job job;
+
+  const Body({Key key, this.job}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -84,11 +140,7 @@ class Body extends StatelessWidget {
               child: AdditionalInfo(),
             ),
             TagsContainer(
-              tags: [
-                "Tecnologia da Informação",
-                "Saúde",
-                "HomeOffice",
-              ],
+              tags: ["Tecnologia da Informação", "Saúde", "Home Office"],
             ),
           ],
         ),
@@ -148,7 +200,7 @@ class InfoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -194,6 +246,10 @@ class Session extends StatelessWidget {
 }
 
 class Header extends StatelessWidget {
+  final Job job;
+
+  const Header({Key key, this.job}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -216,7 +272,7 @@ class Header extends StatelessWidget {
                     ),
                   ),
                   Fonts.montserrat(
-                    "Analista de Sistemas",
+                    job.title,
                     color: Colors.white,
                   ),
                 ],
@@ -265,20 +321,22 @@ class IconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20.0),
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 18.0,
+    return Expanded(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(4.0),
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: 18.0,
+            ),
           ),
         ),
       ),
