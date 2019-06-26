@@ -6,7 +6,7 @@ import 'package:jobtinder/core/models/user.dart';
 import 'package:jobtinder/core/providers/setup.dart' as Providers;
 import 'package:jobtinder/ui/screens/job_search/job_search.dart';
 import 'package:jobtinder/ui/screens/login.dart';
-import 'package:jobtinder/ui/screens/splash.dart';
+import 'package:jobtinder/ui/screens/splash/splash.dart';
 import 'package:jobtinder/ui/widgets/drawer.dart';
 
 import 'package:provider/provider.dart';
@@ -23,22 +23,19 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: Providers.providers,
-      child: ChangeNotifierProvider(
-        builder: (context) => User(),
-        child: MaterialApp(
-          routes: {
-            '/': (context) => Scaffold(
-                  body: Splash(),
-                ),
-            '/login': (context) => Scaffold(
-                  body: Login(),
-                ),
-            '/jobsearch': (context) => Scaffold(
-                  drawer: Drawer(child: AppDrawer()),
-                  body: JobSearch(),
-                ),
-          },
-        ),
+      child: MaterialApp(
+        routes: {
+          '/': (context) => Scaffold(
+                body: Splash(),
+              ),
+          '/login': (context) => Scaffold(
+                body: Login(),
+              ),
+          '/jobsearch': (context) => Scaffold(
+                drawer: Drawer(child: AppDrawer()),
+                body: JobSearch(),
+              ),
+        },
       ),
     );
   }

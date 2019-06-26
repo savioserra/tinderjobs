@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:jobtinder/core/models/user.dart';
-import 'package:jobtinder/ui/screens/job_search/job_search.dart';
 import 'package:jobtinder/ui/styles/fonts.dart';
 import 'package:jobtinder/ui/widgets/button.dart';
-import 'package:provider/provider.dart';
-import 'package:jobtinder/core/services/api/graphql/mutation.dart' as Mutations;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class Login extends StatelessWidget {
   static const routeName = "/login";
@@ -79,61 +72,23 @@ class LoginFormState extends State<LoginForm> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0, right: 30.0, left: 30.0),
-            child: Mutation(
-              onCompleted: handleLogin,
-              options: MutationOptions(
-                document: Mutations.login,
+            child: Container(
+              height: 54.0,
+              child: Button(
+                color: Colors.transparent,
+                splashColor: Colors.white24,
+                loading: loading,
+                onTap: loading ? null : () {},
+                child: Fonts.montserrat(
+                  "Login",
+                  color: Colors.white,
+                ),
               ),
-              builder: (login, result) => Container(
-                    height: 54.0,
-                    child: Button(
-                      outline: true,
-                      splashColor: Colors.black54,
-                      loading: loading,
-                      onTap: loading
-                          ? null
-                          : () {
-                              setState(() => loading = true);
-
-                              login({
-                                "email":
-                                    emailController.text.trim().toLowerCase(),
-                                "password": passwordController.text,
-                              });
-                            },
-                      child: Fonts.montserrat(
-                        "Login",
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
             ),
           ),
         ],
       ),
     );
-  }
-
-  void handleLogin(data) async {
-    if (data != null) {
-      final token = data['login']['token'];
-      final user = data['login']['user'];
-
-      await SharedPreferences.getInstance()
-        ..setString('user', jsonEncode(data));
-
-      Provider.of<User>(context)
-        ..token = token
-        ..email = user["email"]
-        ..rating = user["rating"]
-        ..avatarUrl = user["avatarUrl"];
-
-      await precacheImage(NetworkImage(user["avatarUrl"]), context);
-
-      Navigator.of(context).pushReplacementNamed(JobSearch.routeName);
-    }
-
-    setState(() => loading = false);
   }
 }
 
@@ -148,8 +103,12 @@ class Footer extends StatelessWidget {
         child: Button(
           onTap: () {},
           borderColor: Colors.transparent,
-          splashColor: Colors.white,
-          color: Colors.black26,
+          splashColor: Colors.white24,
+          gradient: const LinearGradient(
+            colors: [Colors.black26, Colors.transparent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           child: Fonts.montserrat(
             "Não possui uma conta? Crie uma!",
             color: Colors.white,

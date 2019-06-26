@@ -1,3 +1,4 @@
+import 'package:jobtinder/core/models/user.dart';
 import 'package:jobtinder/core/services/api/api.dart';
 import 'package:jobtinder/core/services/auth.dart';
 import 'package:jobtinder/core/services/persistence.dart';
@@ -24,4 +25,8 @@ List<SingleChildCloneableWidget> dependentServices = [
   ),
 ];
 
-List<SingleChildCloneableWidget> uiConsumableProviders = [];
+List<SingleChildCloneableWidget> uiConsumableProviders = [
+  ChangeNotifierProvider.value(
+    value: User(),
+  )
+];

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jobtinder/core/models/job.dart';
-import 'package:jobtinder/ui/screens/job_search/model.dart';
+import 'package:jobtinder/ui/screens/job_search/job_search_model.dart';
 import 'package:jobtinder/ui/styles/fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -14,30 +14,6 @@ class JobSearch extends StatefulWidget {
 }
 
 class JobSearchState extends State<JobSearch> {
-  // void refresh() {
-  //   if (availableJobs.length <= 5) {
-  //     setState(() {
-  //       getJobsResult = getJobs();
-  //     });
-  //   }
-  // }
-
-  // Future<List<Job>> getJobs() async {
-  //   var result = await gqlClient.query(QueryOptions(
-  //     document: Query.getJobs,
-  //   ));
-
-  //   if (result.data != null) {
-  //     var jobs = List<Job>.from(
-  //       result.data["me"]["availableJobs"].map((j) => Job(title: j["title"])),
-  //     );
-
-  //     availableJobs.addAll(jobs.where((j) => !availableJobs.contains(j)));
-  //   }
-
-  //   return availableJobs;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<JobSearchModel>.value(

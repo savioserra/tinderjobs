@@ -11,6 +11,7 @@ class Button extends StatelessWidget {
   final VoidCallback onTap;
 
   final BorderRadius borderRadius;
+  final LinearGradient gradient;
 
   final Color color;
   final Color borderColor;
@@ -25,12 +26,15 @@ class Button extends StatelessWidget {
     this.color = Colors.black,
     this.borderColor = Colors.white,
     this.splashColor = Colors.white,
+    this.gradient,
   });
 
   @override
   Widget build(BuildContext context) {
+    assert(color != null || gradient != null);
+
     return Material(
-      color: outline ? Colors.transparent : color,
+      color: Colors.transparent,
       borderRadius: borderRadius,
       child: InkWell(
         borderRadius: borderRadius,
@@ -39,10 +43,10 @@ class Button extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
-            borderRadius: borderRadius,
-            color: Colors.transparent,
-          ),
+              border: Border.all(color: borderColor),
+              borderRadius: borderRadius,
+              color: gradient != null ? null : color,
+              gradient: gradient),
           child: loading ? CircularProgress() : child,
         ),
       ),
