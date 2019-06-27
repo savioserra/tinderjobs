@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jobtinder/core/models/user.dart';
+import 'package:jobtinder/core/services/persistence.dart';
 import 'package:jobtinder/ui/screens/login/login.dart';
 import 'package:jobtinder/ui/styles/fonts.dart';
 import 'package:jobtinder/ui/styles/pallete.dart';
 import 'package:jobtinder/ui/widgets/rating.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -26,8 +26,8 @@ class AppDrawer extends StatelessWidget {
   }
 
   void handleLogout(BuildContext context) async {
-    await SharedPreferences.getInstance()
-      ..remove('user-token');
+    final PersistenceService persistenceService = Provider.of(context);
+    persistenceService.data = {};
 
     await precacheImage(
         AssetImage("assets/images/login_background.jpg"), context);
@@ -144,7 +144,7 @@ class DrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.only(left: 30.0),
+      contentPadding: const EdgeInsets.only(left: 30.0),
       title: Text(this.title, style: TextStyle(fontFamily: "Montserrat")),
       onTap: onTap,
     );

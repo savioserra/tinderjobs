@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jobtinder/core/models/job.dart';
+import 'package:jobtinder/core/view_models/login.dart';
 import 'package:jobtinder/ui/screens/job_search/job_search_model.dart';
 import 'package:jobtinder/ui/styles/fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +20,12 @@ class JobSearchState extends State<JobSearch> {
     return ChangeNotifierProvider<JobSearchModel>.value(
       value: JobSearchModel(Provider.of(context)),
       child: Consumer<JobSearchModel>(
-        builder: (context, model, child) => JobOffer(
-              job: model.availableJobs.first,
-              onLike: model.getAvailableJobs,
-            ),
+        builder: (context, model, child) => model.status == Status.processing
+            ? Container()
+            : JobOffer(
+                job: model.availableJobs.first,
+                onLike: model.getAvailableJobs,
+              ),
       ),
     );
   }
@@ -102,22 +105,18 @@ class Body extends StatelessWidget {
     return Expanded(
       child: Container(
         child: ListView(
+          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.only(bottom: 20.0),
           children: [
             Session(
-              title: "Descrição",
-              child: DescriptionCard(
-                text:
-                    """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.""",
-              ),
+              title: "Informações",
+              child: AdditionalInfo(job: job),
             ),
             Session(
-              title: "Informações",
-              child: AdditionalInfo(),
+              title: "Descrição",
+              child: DescriptionCard(text: job.description),
             ),
-            TagsContainer(
-              tags: ["Tecnologia da Informação", "Saúde", "Home Office"],
-            ),
+            TagsContainer(tags: job.tags),
           ],
         ),
       ),
@@ -126,6 +125,10 @@ class Body extends StatelessWidget {
 }
 
 class AdditionalInfo extends StatelessWidget {
+  final Job job;
+
+  const AdditionalInfo({Key key, this.job}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -147,15 +150,15 @@ class AdditionalInfo extends StatelessWidget {
         children: [
           InfoItem(
             iconData: FontAwesomeIcons.dollarSign,
-            info: "3500.00",
+            info: job.remuneration.toStringAsFixed(2),
           ),
           InfoItem(
             iconData: FontAwesomeIcons.calendar,
-            info: "Segunda à Sexta",
+            info: job.weekDays,
           ),
           InfoItem(
             iconData: FontAwesomeIcons.clock,
-            info: "40 h",
+            info: "${job.weekHours} h",
           ),
           InfoItem(
             iconData: FontAwesomeIcons.mapMarkedAlt,
@@ -242,7 +245,7 @@ class Header extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Fonts.montserrat(
-                      "Empresa Ltda.",
+                      job.company.name,
                       color: Colors.white,
                       fontSize: 22.0,
                     ),
@@ -277,7 +280,7 @@ class Header extends StatelessWidget {
               ),
               child: ClipOval(
                 child: Image.network(
-                  "https://www.designevo.com/res/templates/thumb_small/blue-and-green-circular-fish-company.png",
+                  job.company.avatarUrl,
                   fit: BoxFit.contain,
                 ),
               ),

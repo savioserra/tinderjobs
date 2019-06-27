@@ -1,3 +1,5 @@
+import 'package:jobtinder/core/models/company.dart';
+
 class Job {
   Job({
     this.id,
@@ -11,6 +13,7 @@ class Job {
     this.createdAt,
     this.updatedAt,
     this.deleted,
+    this.company,
   });
 
   String id;
@@ -26,6 +29,8 @@ class Job {
   double matchThreshold;
   bool deleted;
   int weekHours;
+
+  Company company;
 
   bool operator ==(o) => o is Job && o.id == id;
   int get hashCode => id.hashCode ^ title.hashCode;

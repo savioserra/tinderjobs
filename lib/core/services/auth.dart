@@ -1,17 +1,17 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:jobtinder/core/models/user.dart';
 import 'package:jobtinder/core/services/api/api.dart';
 import 'package:jobtinder/core/services/api/graphql/mutation.dart' as Mutation;
+import 'package:jobtinder/core/services/persistence.dart';
 
 class AuthService {
   final Api _api;
+  final PersistenceService _persistenceService;
+  final User _user;
 
-  AuthService(Api api) : _api = api;
+  AuthService(this._api, this._persistenceService, this._user);
 
   Future<String> login(String email, String password) async {
-    if (email == null || password == null) {
-      return null;
-    }
-
     var result = await _api.client.query(
       QueryOptions(document: Mutation.login, variables: {
         "email": email.trim().toLowerCase(),
@@ -20,7 +20,10 @@ class AuthService {
     );
 
     if (result.data != null) {
-      return result.data["login"]["token"];
+      _user.fromJson(result.data["login"]);
+      _persistenceService.data = result.data["login"];
+
+      return _user.token;
     }
 
     return null;

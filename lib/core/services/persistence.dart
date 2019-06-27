@@ -16,13 +16,8 @@ class PersistenceService {
     return _data;
   }
 
-  Future<String> get token async {
-    return (await data)["token"];
-  }
+  Future<String> get token async => (await data)["token"];
 
-  Future<void> persist() async {
-    var shared = await SharedPreferences.getInstance();
-
-    await shared.setString(_keyStore, jsonEncode(data));
-  }
+  set data(dynamic value) => SharedPreferences.getInstance()
+      .then((prefs) => prefs.setString(_keyStore, jsonEncode(value)));
 }

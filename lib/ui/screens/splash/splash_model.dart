@@ -6,17 +6,17 @@ import 'package:jobtinder/ui/screens/job_search/job_search.dart';
 import 'package:jobtinder/ui/screens/login/login.dart';
 
 class SplashModel extends ChangeNotifier {
-  final PersistenceService persistenceService;
-  final User user;
+  final PersistenceService _persistenceService;
+  final User _user;
 
   static const int splashDuration = 1;
 
-  SplashModel(this.persistenceService, this.user, BuildContext context) {
+  SplashModel(this._persistenceService, this._user, BuildContext context) {
     checkCredentials(context);
   }
 
   void checkCredentials(BuildContext context) async {
-    final token = await persistenceService.token;
+    final token = await _persistenceService.token;
 
     Timer(Duration(seconds: splashDuration), () async {
       if (token == null) {
@@ -27,13 +27,11 @@ class SplashModel extends ChangeNotifier {
 
         Navigator.of(context).pushReplacementNamed(Login.routeName);
       } else {
-        var data = await persistenceService.data;
+        var data = await _persistenceService.data;
 
-        user
-          ..email = data["me"]["email"]
-          ..avatarUrl = data["me"]["avatarUrl"];
+        _user.fromJson(data);
 
-        await precacheImage(NetworkImage(user.avatarUrl), context);
+        await precacheImage(NetworkImage(_user.avatarUrl), context);
         Navigator.of(context).pushReplacementNamed(JobSearch.routeName);
       }
     });

@@ -13,6 +13,9 @@ List<SingleChildCloneableWidget> providers = [
 List<SingleChildCloneableWidget> independentServices = [
   Provider<PersistenceService>.value(
     value: PersistenceService(),
+  ),
+  ChangeNotifierProvider.value(
+    value: User(),
   )
 ];
 
@@ -21,12 +24,12 @@ List<SingleChildCloneableWidget> dependentServices = [
     builder: (context, persistence, api) => Api(persistence),
   ),
   ProxyProvider<Api, AuthService>(
-    builder: (context, api, authService) => AuthService(api),
+    builder: (context, api, authService) => AuthService(
+          api,
+          Provider.of(context),
+          Provider.of(context),
+        ),
   ),
 ];
 
-List<SingleChildCloneableWidget> uiConsumableProviders = [
-  ChangeNotifierProvider.value(
-    value: User(),
-  )
-];
+List<SingleChildCloneableWidget> uiConsumableProviders = [];
