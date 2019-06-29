@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:tinderjobs/core/models/job.dart';
 import 'package:tinderjobs/core/providers/job.dart';
 import 'package:tinderjobs/core/providers/setup.dart';
-import 'package:tinderjobs/core/view_models/login.dart';
 import 'package:tinderjobs/ui/styles/fonts.dart';
 
 class JobSearch extends StatefulWidget {
@@ -20,14 +19,11 @@ class JobSearchState extends State<JobSearch> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: Injection.locate<JobService>(),
-      child: Consumer<JobService>(
-        builder: (context, model, child) => model.status == Status.processing
-            ? Container()
-            : JobOffer(
-                job: model.availableJobs.first,
-                onLike: model.getAvailableJobs,
-              ),
-      ),
+      child: Consumer<JobService>(builder: (context, model, child) {
+        var job = model.jobs.first;
+
+        return JobOffer(job: job, onLike: () => model.like(job));
+      }),
     );
   }
 }
@@ -279,7 +275,8 @@ class Header extends StatelessWidget {
               child: ClipOval(
                 child: Image.network(
                   job.company.avatarUrl,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
+                  height: 80.0,
                 ),
               ),
             ),

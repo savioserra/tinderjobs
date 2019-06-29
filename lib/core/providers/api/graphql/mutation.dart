@@ -10,3 +10,12 @@ String login = """
     }
   }
 """;
+
+String like = """
+  mutation (\$jobId: UUID!) {
+  likeJob(jobId: \$jobId) {
+    info
+    success
+  }
+}
+""";

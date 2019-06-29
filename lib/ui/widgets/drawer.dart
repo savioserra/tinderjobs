@@ -30,11 +30,13 @@ class AppDrawer extends StatelessWidget {
   }
 
   void handleLogout(BuildContext context) async {
-    final PersistenceService persistenceService = Provider.of(context);
+    final persistenceService = Injection.locate<PersistenceService>();
     persistenceService.data = {};
 
     await precacheImage(
-        AssetImage("assets/images/login_background.jpg"), context);
+      AssetImage("assets/images/login_background.jpg"),
+      context,
+    );
 
     Navigator.of(context).pushReplacementNamed(Login.routeName);
   }
@@ -126,6 +128,10 @@ class Body extends StatelessWidget {
             ),
             DrawerItem(
               title: "Combinações",
+              onTap: () {},
+            ),
+            DrawerItem(
+              title: "Competências",
               onTap: () {},
             ),
             DrawerItem(
