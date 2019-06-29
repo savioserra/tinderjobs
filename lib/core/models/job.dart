@@ -1,4 +1,4 @@
-import 'package:jobtinder/core/models/company.dart';
+import 'package:tinderjobs/core/models/company.dart';
 
 class Job {
   Job({
@@ -34,4 +34,22 @@ class Job {
 
   bool operator ==(o) => o is Job && o.id == id;
   int get hashCode => id.hashCode ^ title.hashCode;
+
+  static Job fromJson(dynamic json) {
+    return Job(
+      id: json["id"],
+      title: json["title"],
+      description: json["description"],
+      tags: List<String>.from(json["tags"]),
+      matchThreshold: json["matchThreshold"],
+      weekDays: json["weekDays"],
+      deleted: json["deleted"],
+      weekHours: json["weekHours"],
+      createdAt: json["createdAt"],
+      updatedAt: json["updatedAt"],
+      company: Company.fromJson(json["company"]),
+      remuneration:
+          json["remuneration"] != null ? json["remuneration"].toDouble() : null,
+    );
+  }
 }

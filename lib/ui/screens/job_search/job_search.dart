@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:jobtinder/core/models/job.dart';
-import 'package:jobtinder/core/view_models/login.dart';
-import 'package:jobtinder/ui/screens/job_search/job_search_model.dart';
-import 'package:jobtinder/ui/styles/fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:tinderjobs/core/models/job.dart';
+import 'package:tinderjobs/core/providers/job.dart';
+import 'package:tinderjobs/core/providers/setup.dart';
+import 'package:tinderjobs/core/view_models/login.dart';
+import 'package:tinderjobs/ui/styles/fonts.dart';
 
 class JobSearch extends StatefulWidget {
   static const routeName = "/jobsearch";
@@ -17,9 +18,9 @@ class JobSearch extends StatefulWidget {
 class JobSearchState extends State<JobSearch> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<JobSearchModel>.value(
-      value: JobSearchModel(Provider.of(context)),
-      child: Consumer<JobSearchModel>(
+    return ChangeNotifierProvider.value(
+      value: Injection.locate<JobService>(),
+      child: Consumer<JobService>(
         builder: (context, model, child) => model.status == Status.processing
             ? Container()
             : JobOffer(
@@ -75,21 +76,18 @@ class Footer extends StatelessWidget {
       height: 60.0,
       width: double.infinity,
       color: const Color(0xFF191919),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-              icon: FontAwesomeIcons.ban,
-              onTap: () {},
-            ),
-            IconButton(
-              icon: FontAwesomeIcons.heart,
-              onTap: onLike,
-            )
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            icon: FontAwesomeIcons.ban,
+            onTap: () {},
+          ),
+          IconButton(
+            icon: FontAwesomeIcons.heart,
+            onTap: onLike,
+          )
+        ],
       ),
     );
   }
@@ -305,16 +303,16 @@ class IconButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(4.0),
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 18.0,
+          child: Center(
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                color: Colors.white,
+                size: 18.0,
+              ),
             ),
           ),
         ),
@@ -331,7 +329,7 @@ class TagsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Wrap(
         children: tags.map((t) => Tag(text: t, onTap: () {})).toList(),
       ),
@@ -382,6 +380,7 @@ class DescriptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20.0),
+      width: double.infinity,
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(

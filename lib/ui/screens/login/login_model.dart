@@ -1,9 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:jobtinder/core/services/auth.dart';
-import 'package:jobtinder/ui/screens/job_search/job_search.dart';
+import 'package:tinderjobs/core/providers/auth.dart';
+import 'package:tinderjobs/core/providers/setup.dart';
+import 'package:tinderjobs/ui/screens/job_search/job_search.dart';
 
 class LoginModel extends ChangeNotifier {
-  final AuthService _authService;
+  final _authService = Injection.locate<AuthService>();
   bool _loading = false;
 
   bool get loading => _loading;
@@ -12,8 +13,6 @@ class LoginModel extends ChangeNotifier {
     _loading = loading;
     notifyListeners();
   }
-
-  LoginModel(this._authService);
 
   void login(String email, String password, BuildContext context) async {
     if (email.isEmpty || password.isEmpty) {

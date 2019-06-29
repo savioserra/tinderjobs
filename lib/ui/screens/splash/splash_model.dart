@@ -1,17 +1,19 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:jobtinder/core/models/user.dart';
-import 'package:jobtinder/core/services/persistence.dart';
-import 'package:jobtinder/ui/screens/job_search/job_search.dart';
-import 'package:jobtinder/ui/screens/login/login.dart';
+import 'package:tinderjobs/core/models/user.dart';
+import 'package:tinderjobs/core/providers/persistence.dart';
+import 'package:tinderjobs/core/providers/setup.dart';
+import 'package:tinderjobs/ui/screens/job_search/job_search.dart';
+import 'package:tinderjobs/ui/screens/login/login.dart';
 
 class SplashModel extends ChangeNotifier {
-  final PersistenceService _persistenceService;
-  final User _user;
+  final _persistenceService = Injection.locate<PersistenceService>();
+  final _user = Injection.locate<User>();
 
   static const int splashDuration = 1;
 
-  SplashModel(this._persistenceService, this._user, BuildContext context) {
+  SplashModel({BuildContext context}) {
     checkCredentials(context);
   }
 
@@ -29,7 +31,7 @@ class SplashModel extends ChangeNotifier {
       } else {
         var data = await _persistenceService.data;
 
-        _user.fromJson(data);
+        _user.copy(User.fromJson(data["user"]));
 
         await precacheImage(NetworkImage(_user.avatarUrl), context);
         Navigator.of(context).pushReplacementNamed(JobSearch.routeName);

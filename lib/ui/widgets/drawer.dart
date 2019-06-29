@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:jobtinder/core/models/user.dart';
-import 'package:jobtinder/core/services/persistence.dart';
-import 'package:jobtinder/ui/screens/login/login.dart';
-import 'package:jobtinder/ui/styles/fonts.dart';
-import 'package:jobtinder/ui/styles/pallete.dart';
-import 'package:jobtinder/ui/widgets/rating.dart';
 import 'package:provider/provider.dart';
+import 'package:tinderjobs/core/models/user.dart';
+import 'package:tinderjobs/core/providers/persistence.dart';
+import 'package:tinderjobs/core/providers/setup.dart';
+import 'package:tinderjobs/ui/screens/login/login.dart';
+import 'package:tinderjobs/ui/styles/fonts.dart';
+import 'package:tinderjobs/ui/styles/pallete.dart';
+import 'package:tinderjobs/ui/widgets/rating.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-
-    return Column(
-      children: [
-        Header(user: user),
-        Body(user: user),
-        DrawerItem(
-          title: "Sair",
-          onTap: () => handleLogout(context),
-        ),
-      ],
+    return ChangeNotifierProvider.value(
+      value: Injection.locate<User>(),
+      child: Consumer<User>(
+        builder: (context, user, child) => Column(
+              children: [
+                Header(user: user),
+                Body(user: user),
+                DrawerItem(
+                  title: "Sair",
+                  onTap: () => handleLogout(context),
+                ),
+              ],
+            ),
+      ),
     );
   }
 

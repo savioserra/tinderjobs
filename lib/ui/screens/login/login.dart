@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jobtinder/ui/screens/login/login_model.dart';
-import 'package:jobtinder/ui/styles/fonts.dart';
-import 'package:jobtinder/ui/widgets/button.dart';
 import 'package:provider/provider.dart';
+import 'package:tinderjobs/ui/screens/login/login_model.dart';
+import 'package:tinderjobs/ui/styles/fonts.dart';
+import 'package:tinderjobs/ui/widgets/button.dart';
 
 class Login extends StatelessWidget {
   static const routeName = "/login";
@@ -37,14 +37,13 @@ class LoginFormState extends State<LoginForm> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: LoginModel(Provider.of(context)),
+      value: LoginModel(),
       child: Consumer<LoginModel>(
         builder: (context, model, child) => Form(
               child: Column(

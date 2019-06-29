@@ -1,35 +1,39 @@
-import 'package:jobtinder/core/models/user.dart';
-import 'package:jobtinder/core/services/api/api.dart';
-import 'package:jobtinder/core/services/auth.dart';
-import 'package:jobtinder/core/services/persistence.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tinderjobs/core/models/user.dart';
+import 'package:tinderjobs/core/providers/api/api.dart';
+import 'package:tinderjobs/core/providers/auth.dart';
+import 'package:tinderjobs/core/providers/job.dart';
+import 'package:tinderjobs/core/providers/persistence.dart';
 
-List<SingleChildCloneableWidget> providers = [
-  ...independentServices,
-  ...dependentServices,
-  ...uiConsumableProviders,
-];
+class Injection {
+  static final locate = GetIt();
+  static bool initialized = false;
 
-List<SingleChildCloneableWidget> independentServices = [
-  Provider<PersistenceService>.value(
-    value: PersistenceService(),
-  ),
-  ChangeNotifierProvider.value(
-    value: User(),
-  )
-];
+  static void setup() {
+    if (initialized) {
+      throw "Injection already initialized.";
+    }
 
-List<SingleChildCloneableWidget> dependentServices = [
-  ProxyProvider<PersistenceService, Api>(
-    builder: (context, persistence, api) => Api(persistence),
-  ),
-  ProxyProvider<Api, AuthService>(
-    builder: (context, api, authService) => AuthService(
-          api,
-          Provider.of(context),
-          Provider.of(context),
-        ),
-  ),
-];
+    locate.registerLazySingleton(
+      () => PersistenceService(),
+    );
 
-List<SingleChildCloneableWidget> uiConsumableProviders = [];
+    locate.registerLazySingleton(
+      () => Api(serverEndpoint: "http://34.68.91.49"),
+    );
+
+    locate.registerLazySingleton(
+      () => AuthService(),
+    );
+
+    locate.registerLazySingleton(
+      () => User(),
+    );
+
+    locate.registerLazySingleton(
+      () => JobService(),
+    );
+
+    initialized = true;
+  }
+}

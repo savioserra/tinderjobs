@@ -1,13 +1,15 @@
+import 'package:flutter/widgets.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:jobtinder/core/services/persistence.dart';
+import 'package:tinderjobs/core/providers/persistence.dart';
+import 'package:tinderjobs/core/providers/setup.dart';
 
 class Api {
-  static const serverEndpoint = 'http://34.68.91.49';
-  final PersistenceService _persistenceService;
+  final String serverEndpoint;
+  final _persistenceService = Injection.locate<PersistenceService>();
 
   GraphQLClient client;
 
-  Api(PersistenceService persist) : _persistenceService = persist {
+  Api({@required this.serverEndpoint}) {
     var httpLink = HttpLink(
       uri: serverEndpoint,
     );

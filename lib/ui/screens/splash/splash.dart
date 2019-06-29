@@ -1,7 +1,7 @@
-import 'package:jobtinder/ui/screens/splash/splash_model.dart';
-import 'package:jobtinder/ui/styles/pallete.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tinderjobs/ui/screens/splash/splash_model.dart';
+import 'package:tinderjobs/ui/styles/pallete.dart';
 
 class Splash extends StatefulWidget {
   static const routeName = "/splash";
@@ -15,9 +15,7 @@ class SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SplashModel>.value(
       value: SplashModel(
-        Provider.of(context),
-        Provider.of(context),
-        context,
+        context: context,
       ),
       child: Consumer<SplashModel>(
         builder: (context, model, child) => Container(

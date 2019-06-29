@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jobtinder/ui/widgets/drawer.dart';
+import 'package:tinderjobs/ui/widgets/drawer.dart';
 
 class Screen extends StatelessWidget {
   final Widget _widget;
