@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:tinderjobs/core/providers/auth.dart';
 import 'package:tinderjobs/core/providers/setup.dart';
-import 'package:tinderjobs/ui/screens/job_search/job_search.dart';
+import 'package:tinderjobs/ui/screens/jobs/jobs.dart';
 
 class LoginModel extends ChangeNotifier {
   final _authService = Injection.locate<AuthService>();
@@ -24,7 +24,7 @@ class LoginModel extends ChangeNotifier {
     var res = await _authService.login(email, password);
 
     if (res != null) {
-      Navigator.pushReplacementNamed(context, JobSearch.routeName);
+      Navigator.pushReplacementNamed(context, Jobs.routeName);
     }
 
     loading = false;

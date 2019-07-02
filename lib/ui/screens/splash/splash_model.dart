@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tinderjobs/core/models/user.dart';
 import 'package:tinderjobs/core/providers/persistence.dart';
 import 'package:tinderjobs/core/providers/setup.dart';
-import 'package:tinderjobs/ui/screens/job_search/job_search.dart';
+import 'package:tinderjobs/ui/screens/jobs/jobs.dart';
 import 'package:tinderjobs/ui/screens/login/login.dart';
 
 class SplashModel extends ChangeNotifier {
@@ -34,7 +34,7 @@ class SplashModel extends ChangeNotifier {
         _user.copy(User.fromJson(data["user"]));
 
         await precacheImage(NetworkImage(_user.avatarUrl), context);
-        Navigator.of(context).pushReplacementNamed(JobSearch.routeName);
+        Navigator.of(context).pushReplacementNamed(Jobs.routeName);
       }
     });
   }

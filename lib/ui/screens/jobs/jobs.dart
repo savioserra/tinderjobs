@@ -5,58 +5,136 @@ import 'package:provider/provider.dart';
 import 'package:tinderjobs/core/models/job.dart';
 import 'package:tinderjobs/core/providers/job.dart';
 import 'package:tinderjobs/core/providers/setup.dart';
+import 'package:tinderjobs/core/view_models/login.dart';
 import 'package:tinderjobs/ui/styles/fonts.dart';
 
-class JobSearch extends StatefulWidget {
-  static const routeName = "/jobsearch";
+class Jobs extends StatefulWidget {
+  static const routeName = "/jobs";
 
   @override
-  JobSearchState createState() => JobSearchState();
+  JobsState createState() => JobsState();
 }
 
-class JobSearchState extends State<JobSearch> {
+class JobsState extends State<Jobs> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: Injection.locate<JobService>(),
       child: Consumer<JobService>(builder: (context, model, child) {
-        var job = model.jobs.first;
+        if (model.jobs.isEmpty) {
+          return EmptyState(
+            refresh: model.refresh,
+          );
+        }
 
-        return JobOffer(job: job, onLike: () => model.like(job));
+        var job = model.jobs.first;
+        return JobOffer(
+          job: job,
+          onLike: () => model.like(job),
+          inactive: model.status == Status.processing,
+        );
       }),
+    );
+  }
+}
+
+class EmptyState extends StatelessWidget {
+  static const statusBarOffset = 26.0;
+  final VoidCallback refresh;
+
+  EmptyState({@required this.refresh});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: statusBarOffset,
+          width: double.infinity,
+          color: Colors.black,
+        ),
+        Expanded(
+          child: RefreshIndicator(
+            color: Colors.black,
+            onRefresh: refresh,
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Container(
+                height: MediaQuery.of(context).size.height - statusBarOffset,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Icon(
+                        Icons.sentiment_very_dissatisfied,
+                        color: Colors.grey,
+                        size: 30.0,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                      child: Fonts.montserrat(
+                        "Oops!\nNenhuma vaga encontrada no momento.",
+                        color: Colors.grey,
+                        align: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
 
 class JobOffer extends StatelessWidget {
   final Job job;
+  final bool inactive;
   final VoidCallback onLike;
 
-  JobOffer({this.job, this.onLike});
+  JobOffer({this.job, this.onLike, this.inactive = false});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF373737),
-            Color(0xFF373737),
-            Color(0xFF222222),
-            Color(0xFF0B0B0B)
-          ],
-          stops: [0.0, 0.4, 0.8, 1.0],
+    return Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF373737),
+                Color(0xFF373737),
+                Color(0xFF222222),
+                Color(0xFF0B0B0B)
+              ],
+              stops: [0.0, 0.4, 0.8, 1.0],
+            ),
+          ),
+          child: Column(
+            children: [
+              Header(job: job),
+              Body(job: job),
+              Footer(onLike: onLike),
+            ],
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          Header(job: job),
-          Body(job: job),
-          Footer(onLike: onLike),
-        ],
-      ),
+        AbsorbPointer(
+          absorbing: inactive,
+          child: IgnorePointer(
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 200),
+              color: inactive ? Colors.black54 : Colors.transparent,
+            ),
+          ),
+        )
+      ],
     );
   }
 }
@@ -197,7 +275,7 @@ class Session extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -343,7 +421,7 @@ class Tag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -351,8 +429,10 @@ class Tag extends StatelessWidget {
           splashColor: Colors.white,
           onTap: onTap,
           child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 6.0,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.0),
               border: Border.all(

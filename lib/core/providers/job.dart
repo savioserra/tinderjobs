@@ -41,6 +41,8 @@ class JobService extends ChangeNotifier {
   }
 
   void like(Job job) async {
+    status = Status.processing;
+
     await _api.client.mutate(
       MutationOptions(
         document: Mutation.like,
