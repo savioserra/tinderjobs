@@ -140,7 +140,7 @@ class Background extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(imagePath),
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
             overlayColor.withOpacity(0.8),
             BlendMode.luminosity,
