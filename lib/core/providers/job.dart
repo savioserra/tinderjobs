@@ -18,11 +18,9 @@ class JobService extends ChangeNotifier {
   }
 
   Future<void> refresh() async {
-    if (this.jobs.length > 3) {
-      return;
+    if (status != Status.processing) {
+      status = Status.processing;
     }
-
-    status = Status.processing;
 
     var result = await _api.client.query(QueryOptions(
       document: Query.getJobs,
@@ -53,7 +51,12 @@ class JobService extends ChangeNotifier {
     );
 
     this.jobs.remove(job);
-    refresh();
+
+    if (this.jobs.length <= 3) {
+      refresh();
+    } else {
+      status = Status.idle;
+    }
   }
 
   Status get status => _status;

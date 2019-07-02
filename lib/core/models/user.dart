@@ -16,7 +16,7 @@ class User with ChangeNotifier {
     return User(
       avatarUrl: data["avatarUrl"],
       email: data["email"],
-      rating: data["rating"],
+      rating: data["rating"].toDouble(),
     );
   }
 
