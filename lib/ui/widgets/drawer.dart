@@ -31,7 +31,7 @@ class AppDrawer extends StatelessWidget {
 
   void handleLogout(BuildContext context) async {
     final persistenceService = Injection.locate<PersistenceService>();
-    persistenceService.data = {};
+    persistenceService.setData({});
 
     await precacheImage(
       AssetImage("assets/images/login_background.jpg"),

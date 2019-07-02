@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersistenceService {
@@ -18,6 +19,10 @@ class PersistenceService {
 
   Future<String> get token async => (await data)["token"];
 
-  set data(dynamic value) => SharedPreferences.getInstance()
-      .then((prefs) => prefs.setString(_keyStore, jsonEncode(value)));
+  Future<void> setData(dynamic value) async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyStore, jsonEncode(value));
+
+    _data = value;
+  }
 }

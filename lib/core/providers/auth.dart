@@ -26,8 +26,8 @@ class AuthService {
     if (result.data != null) {
       _user.copy(User.fromJson(result.data["login"]["user"]));
       _token = result.data["login"]["token"];
-      _persistenceService.data = result.data["login"];
 
+      await _persistenceService.setData(result.data["login"]);
       return token;
     }
 
